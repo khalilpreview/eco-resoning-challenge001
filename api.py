@@ -1,25 +1,18 @@
-from flask import Flask, jsonify, redirect
+from flask import Flask
 from flask_restful import Api
-from controllers import defaultControler
+from flask_cors import CORS
+from handlers.routes import configure_routes
+
 
 
 app = Flask(__name__)
 
 api = Api(app)
 
-api.add_resource(defaultControler.HomeController, '/api/', endpoint="api")
-api.add_resource(defaultControler.TopNPlantsController, '/api/top/plants/', endpoint="api-top-plants")
-api.add_resource(defaultControler.AllStateAnnualGeneration, '/api/state-gen/all/')
-api.add_resource(defaultControler.FilterByStateCotroller, '/api/state-gen/filter/<state_abbreviation>/')
+CORS(app)
+
+configure_routes(api, app)
 
 
-@app.route('/')
-def default_api_home():
-    return redirect("/api/")
-
-
-@app.errorhandler(404)
-def not_found(e):
-  return redirect("/api/")
 
 
